@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{% block article %}
+<div class="large-8 columns">
+{% for article in articles %}
+    <h6>Дата публикации:{{ article.article_date }}</h6>
+    <h4><a href="/articles/get/{{ article.id }}/">{{ article.article_title }}</a></h4>
+    <p>{{ article.article_text }}</p>
+    <p><a href="/articles/addlike/{{ article.id }}/"><img src="{% static "images.jpg" %}" width="25px" height="25px"></a>{{ article.article_likes }}</p>
+    <hr>
+{% endfor %}
+ </div>
+    <div class="row">
+        <div class="large-3 large-offset-5 columns">
+            <ul class="pagination">
+                {% if articles.has_previous %}
+                    <li class="arrow"><a href="/page/{{ articles.previous_page_number }}/">&laquo;</a></li>
+                {% else %}
+                    <li class="arrow unavailable"><a href="">&laquo;</a></li>
+                {% endif %}
+                {% for page in articles.paginator.page_range %}
+                    {% if page == articles.number %}
+                        <li class="current"><a href="/page/{{ page }}/">{{ page }}</a></li>
+                    {% else %}
+                        <li><a href="/page/{{ page }}/">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if articles.has_next %}
+                    <li class="arrow"><a href="/page/{{ articles.next_page_number }}/">&raquo;</a></li>
+                {% else %}
+                    <li class="arrow unavailable"><a href="">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
